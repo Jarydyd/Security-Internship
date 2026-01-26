@@ -1,4 +1,5 @@
 // Jaryd Rockman
+// git test git
 // Dr. Eun-Joo Lee 
 // Purpose: 1. Key Schedule Implementation: 
 // Program the DES Key Schedule, taking a 64-bit key (including parity bits) and correctly performing:
@@ -79,4 +80,5 @@ int main() {
 	//KeyExpansion(subkeys, keybits, false);
 	cout << endl;
 	KeyExpansion(subkeys, keybits, true);
+
 	*/
