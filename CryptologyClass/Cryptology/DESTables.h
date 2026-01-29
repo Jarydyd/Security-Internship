@@ -2,7 +2,6 @@
 
 
 // all tables here are standard DES tables
-
 namespace DESTables {
 	// Expansion Function Table
 	static constexpr int E[] = {
@@ -37,7 +36,7 @@ namespace DESTables {
 		34, 2, 42, 10, 50, 18, 58, 26,
 		33, 1, 41, 9,  49, 17, 57, 25
 	};
-	// S-Boxes // Official DES S-boxes // 3 dimmensional array, first is S box number, second is row, thirds is column
+	// S-Boxes // Official DES S-boxes // 3 dimmensional array, first is S box number, second is row, thirds column
     const int SBoxes[8][4][16] = 
     {
         // S1

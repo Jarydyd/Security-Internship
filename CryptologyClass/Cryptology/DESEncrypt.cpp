@@ -1,6 +1,6 @@
 #include "DESEncrypt.h"
 #include "KeyExpansion.h"
-#include "DESTables.h"
+#include "DESTables.h" // contains E IP FP SBOXES and permutation for f function
 #include <bitset>
 
 using namespace std;
@@ -14,14 +14,15 @@ ullong64 DESEncrypt(ullong64 block, bitset<64> key)
 	ullong32 right = block & 0xFFFFFFFF;
 	ullong48 subkeys[16] = {};
 	KeyExpansion(subkeys, key, false, false);
-	for (int round = 0; round < 16; round++) {
+	for (int round = 0; round < 16; round++) 
+	{
 		ullong48 subkey = subkeys[round];
-		ullong32 newleft = right;
-		ullong32 newright = left ^ f_function(right, subkey);
+		ullong32 newleft = right; // feistel
+		ullong32 newright = left ^ f_function(right, subkey); // xor left with right key permuted through f function
 		left = newleft;
 		right = newright;
 	}
-	ullong64 outblock = (right << 32) | left;
+	ullong64 outblock = (right << 32) | left; // concat halves together, note that CT = right left
 	outblock = Unscramble(outblock);
 	return outblock;
 }
@@ -30,15 +31,15 @@ ullong48 expand(ullong32 half)
 {
 	bitset<32> input(half);
 	bitset<48> output;
-	for (int i = 0; i < size(E); i++)
+	for (int i = 0; i < size(E); i++) // expansion table; ie map 32 bits to 48 bits
 		output[47 - i] = input[32 - E[i]];
 	return output.to_ullong();
 }
 
 ullong32 f_function(ullong32 half, ullong48 subkey) 
 {
-	ullong48 unsubbed = expand(half) ^ subkey;
-	ullong32 subbed = Substitution(unsubbed);
+	ullong48 unsubbed = expand(half) ^ subkey; // expand then xor with subkey
+	ullong32 subbed = Substitution(unsubbed); // 
 	ullong32 permuted = Permutation(subbed);
 	return permuted;
 }
@@ -64,7 +65,8 @@ ullong64 Unscramble(ullong64 block)
 ullong32 Substitution(ullong48 input) 
 {
 	ullong32 output = 0;
-	for (int i = 0; i < 8; i++) {
+	for (int i = 0; i < 8; i++) 
+	{
 		int shift = 48 - 6 * (i + 1);
 		bitset<6>inbox((input >> shift) & 0x3F);
 		// note: bitsets are indexed from the right 
