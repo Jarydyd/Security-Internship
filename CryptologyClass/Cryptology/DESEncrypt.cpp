@@ -1,49 +1,52 @@
 #include "DESEncrypt.h"
 #include "KeyExpansion.h"
-#include "DESTables.h" // contains E IP FP SBOXES and permutation for f function
+#include "DESTables.h" // contains tables: P E IP FP SBOXES and permutation for f function
 #include <bitset>
 
 using namespace std;
 using namespace DESTables;
-typedef uint64_t ullong32;
+typedef uint64_t ullong32; // intentionally uint64, named 32 to keep track
 
 ullong64 DESEncrypt(ullong64 block, bitset<64> key) 
 {
-	block = Scramble(block);
-	ullong32 left = block >> 32;
+	block = Scramble(block); // apply ip to block
+	ullong32 left = block >> 32; // split block into left and right halves
 	ullong32 right = block & 0xFFFFFFFF;
-	ullong48 subkeys[16] = {};
-	KeyExpansion(subkeys, key, false, false);
+	ullong48 subkeys[16] = {}; // also holds eah subkey
+	KeyExpansion(subkeys, key, false, false); // generates subkeys
 	for (int round = 0; round < 16; round++) 
 	{
-		ullong48 subkey = subkeys[round];
+		ullong48 subkey = subkeys[round]; // current subkey
 		ullong32 newleft = right; // feistel
 		ullong32 newright = left ^ f_function(right, subkey); // xor left with right key permuted through f function
-		left = newleft;
-		right = newright;
+		left = newleft; // update for next round
+		right = newright; // update for next round
 	}
 	ullong64 outblock = (right << 32) | left; // concat halves together, note that CT = right left
-	outblock = Unscramble(outblock);
+	outblock = Unscramble(outblock); // apply fp to block
 	return outblock;
 }
 
+// just des empansion function
 ullong48 expand(ullong32 half) 
 {
-	bitset<32> input(half);
+	bitset<32> input(half); 
 	bitset<48> output;
 	for (int i = 0; i < size(E); i++) // expansion table; ie map 32 bits to 48 bits
 		output[47 - i] = input[32 - E[i]];
 	return output.to_ullong();
 }
 
+// des f function
 ullong32 f_function(ullong32 half, ullong48 subkey) 
 {
 	ullong48 unsubbed = expand(half) ^ subkey; // expand then xor with subkey
-	ullong32 subbed = Substitution(unsubbed); // 
+	ullong32 subbed = Substitution(unsubbed); 
 	ullong32 permuted = Permutation(subbed);
 	return permuted;
 }
 
+// apply initial permutation
 ullong64 Scramble(ullong64 block) 
 {
 	bitset<64> input(block);
@@ -53,6 +56,7 @@ ullong64 Scramble(ullong64 block)
 	return output.to_ullong();
 }
 
+// final permutation
 ullong64 Unscramble(ullong64 block) 
 {
 	bitset<64> input(block);
@@ -64,17 +68,17 @@ ullong64 Unscramble(ullong64 block)
 
 ullong32 Substitution(ullong48 input) 
 {
-	ullong32 output = 0;
-	for (int i = 0; i < 8; i++) 
+	ullong32 output = 0; // hold
+	for (int i = 0; i < 8; i++)  // for each sbox
 	{
 		int shift = 48 - 6 * (i + 1);
 		bitset<6>inbox((input >> shift) & 0x3F);
 		// note: bitsets are indexed from the right 
-		int row = inbox[5] << 1 | inbox[0];
-		int col = inbox[4] << 3 | inbox[3] << 2 | inbox[2] << 1 | inbox[1];
+		int row = inbox[5] << 1 | inbox[0]; // outer two bits = row, 
+		int col = inbox[4] << 3 | inbox[3] << 2 | inbox[2] << 1 | inbox[1]; // inner four bits = col
 		
-		int outshift = 32 - 4 * (i + 1);
-		output |= SBoxes[i][row][col] << outshift;
+		int outshift = 32 - 4 * (i + 1); 
+		output |= SBoxes[i][row][col] << outshift; // find sbox, OR it with output at correct position
 	}
 	return output;
 }
