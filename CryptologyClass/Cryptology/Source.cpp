@@ -22,11 +22,19 @@ ullong64 paritybits = 0x0101010101010101ULL; // mask of parity bits
 
 // creates subkeys based off provided testkey, then performs a small bruteforce attack, skipping keys with respect to set parity bits
 int main() {
+	ullong testPT = 0x0123456789ABCDEFULL; // sample test plaintext
 	ullong testkey = 0x0123456789ABCDEFULL; // sample test key
+	ullong testPT2 = 0x123456ABCD132536ULL; // another sample test plaintext
+	ullong testkey2 = 0xAABB09182736CCDDULL; // another sample test key
 	ullong subkeys[16]; // holds each subkey
-	KeyExpansion(subkeys, bitset<64>(testkey), true, true); // print subkeys in both hex and binary
+	ullong64 CT = DESEncrypt(testPT, testkey, false); 
+	ullong64 PT = DESEncrypt(CT, testkey, true); 
+	cout << "---------------------------------" << endl;
+	ullong64 CT2 = DESEncrypt(testPT2, testkey2, false);
+	ullong64 PT2 = DESEncrypt(CT2, testkey2, true);
 
-	ullong64 secretkey = 1ULL << 20; // sample secretkey, deliberiately small for shorter tests, can be any 64 bit value
+	// small brute force attack demonstration
+	/*ullong64 secretkey = 1ULL << 20; // sample secretkey, deliberiately small for shorter tests, can be any 64 bit value
 
 	// if secretkey includes parity bits, increment them.
 	while (secretkey & paritybits) secretkey += secretkey & paritybits;
@@ -50,7 +58,7 @@ int main() {
 
 	cout << "Found Key: 0x" << hex << uppercase << setw(16) << right << setfill('0') << foundkey << endl;
 	cout << "Time spent: " << chrono::duration<double>(end - start).count() << " seconds." << endl;
-	cout << "Keys checked: " << dec << searchcount << endl;
+	cout << "Keys checked: " << dec << searchcount << endl;*/
 	string close;
 	cin >> close;
 	return 0;

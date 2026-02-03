@@ -7,16 +7,17 @@ using namespace std;
 using namespace DESTables;
 typedef uint64_t ullong32; // intentionally uint64, named 32 to keep track
 
-ullong64 DESEncrypt(ullong64 block, bitset<64> key) 
+ullong64 DESEncrypt(ullong64 block, bitset<64> key, bool decrypt) 
 {
 	block = Scramble(block); // apply ip to block
 	ullong32 left = block >> 32; // split block into left and right halves
 	ullong32 right = block & 0xFFFFFFFF;
 	ullong48 subkeys[16] = {}; // also holds eah subkey
-	KeyExpansion(subkeys, key, false, false); // generates subkeys
+	KeyExpansion(subkeys, key, true, false); // generates subkeys
 	for (int round = 0; round < 16; round++) 
 	{
-		ullong48 subkey = subkeys[round]; // current subkey
+		int hold = decrypt ? (15 - round) : round; // if decrypt, reverse order of subkeys, else don't
+		ullong48 subkey = subkeys[hold]; // current subkey
 		ullong32 newleft = right; // feistel
 		ullong32 newright = left ^ f_function(right, subkey); // xor left with right key permuted through f function
 		left = newleft; // update for next round
@@ -24,6 +25,7 @@ ullong64 DESEncrypt(ullong64 block, bitset<64> key)
 	}
 	ullong64 outblock = (right << 32) | left; // concat halves together, note that CT = right left
 	outblock = Unscramble(outblock); // apply fp to block
+	cout << outblock << endl;
 	return outblock;
 }
 
