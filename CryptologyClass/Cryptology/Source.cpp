@@ -16,6 +16,7 @@
 #include <bitset>
 #include <string>
 #include <chrono>
+#include <iomanip>
 using namespace std;
 
 ullong64 paritybits = 0x0101010101010101ULL; // mask of parity bits
@@ -27,7 +28,7 @@ int main() {
 	ullong testPT2 = 0x123456ABCD132536ULL; // another sample test plaintext
 	ullong testkey2 = 0xAABB09182736CCDDULL; // another sample test key
 	ullong subkeys[16]; // holds each subkey
-	ullong64 CT = DESEncrypt(testPT, testkey, false); 
+	ullong64 CT = DESEncrypt(testPT, testkey, false);
 	ullong64 PT = DESEncrypt(CT, testkey, true); 
 	cout << "---------------------------------" << endl;
 	ullong64 CT2 = DESEncrypt(testPT2, testkey2, false);

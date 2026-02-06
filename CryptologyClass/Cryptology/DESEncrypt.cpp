@@ -9,6 +9,7 @@ typedef uint64_t ullong32; // intentionally uint64, named 32 to keep track
 
 ullong64 DESEncrypt(ullong64 block, bitset<64> key, bool decrypt) 
 {
+	cout << endl << "Key is 0x" << hex << uppercase << setw(16) << setfill('0') << (unsigned long long)block << dec << setfill(' ') << endl; // set to hex, print block, reset to dec
 	block = Scramble(block); // apply ip to block
 	ullong32 left = block >> 32; // split block into left and right halves
 	ullong32 right = block & 0xFFFFFFFF;
