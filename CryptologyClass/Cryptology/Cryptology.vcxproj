@@ -127,14 +127,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CBC.cpp" />
     <ClCompile Include="DESEncrypt.cpp" />
     <ClCompile Include="DESTables.h" />
     <ClCompile Include="KeyExpansion.cpp" />
+    <ClCompile Include="LFSR.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CBC.h" />
     <ClInclude Include="DESEncrypt.h" />
     <ClInclude Include="KeyExpansion.h" />
+    <ClInclude Include="LFSR.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
