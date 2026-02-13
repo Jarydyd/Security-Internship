@@ -42,7 +42,7 @@ int main() {
 
 
 	pT2.clear();
-	cbcEncrypt(cT, testkey, pT2, IV);
+	cbcDecrypt(cT, testkey, pT2, IV);
 
 	for (size_t i = 0; i < pT2.size(); ++i)
 	{
