@@ -7,7 +7,6 @@
 
 using namespace std;
 using namespace DESTables;
-typedef uint64_t ullong32; // intentionally uint64, named 32 to keep track
 
 ullong64 DESEncrypt(ullong64 block, bitset<64> key, bool decrypt) 
 {

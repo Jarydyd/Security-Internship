@@ -17,8 +17,8 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include <chrono>
 using namespace std;
-typedef vector<uint64_t> vector64;
 
 ullong64 paritybits = 0x0101010101010101ULL; // mask of parity bits
 
@@ -52,42 +52,16 @@ int main() {
 		cout << "Recovered plaintext is 0x" << hex << uppercase << setw(16) << setfill('0') << pT2[i] << dec << setfill(' ') << endl;
 	}
 
-	// small brute force attack demonstration
-	// ullong subkeys[16]; // holds each subkey
-
-	/*ullong64 secretkey = 1ULL << 20; // sample secretkey, deliberiately small for shorter tests, can be any 64 bit value
-
-	// if secretkey includes parity bits, increment them.
-	while (secretkey & paritybits) secretkey += secretkey & paritybits;
-	cout << "Secret key = 0x" << hex << uppercase << setw(16) << right << setfill('0') << secretkey << endl;
-
-	ullong64 plaintext = 0; // sample plaintext, chosen to be 0 for simplicity
-	ullong64 ciphertext = DESEncrypt(plaintext, bitset<64>(secretkey)); // encrypt PT with sample secret key
-	ullong64 foundkey = 0;
-	ullong64 searchcount = 0;
-	auto start = chrono::high_resolution_clock::now(); // see how long search takes
-	while (true) 
-	{
-		// skip keys with parity bits set to reduce search space
-		while(foundkey & paritybits) foundkey += foundkey & paritybits;
-		ullong64 encryptedtext = DESEncrypt(plaintext, bitset<64>(foundkey)); // test current key
-		searchcount++; // increments per key, used to display total keys checked
-		if (encryptedtext == ciphertext) break; // if found key, break
-		foundkey++;
-	}
-	auto end = chrono::high_resolution_clock::now(); 
-
-	cout << "Found Key: 0x" << hex << uppercase << setw(16) << right << setfill('0') << foundkey << endl;
-	cout << "Time spent: " << chrono::duration<double>(end - start).count() << " seconds." << endl;
-	cout << "Keys checked: " << dec << searchcount << endl;*/
+	
 	string close;
 	cin >> close;
 	return 0;
 }
 
-
-// alternative code that that can be used to allow user input as a key
-/*
+int case2()
+{
+	// alternative code that that can be used to allow user input as a key
+	ullong subkeys[16]; // holds each subkey
 	string keyString = "";
 	cout << "Enter Key? [y/n] ";
 	char answer;
@@ -105,10 +79,43 @@ int main() {
 
 	bitset<64> keybits(keyString);
 
-	uint64_t subkeys[16] = {};
 	//KeyExpansion(subkeys, keybits, false);
 	cout << endl;
 	KeyExpansion(subkeys, keybits, true);
+	return 0;
+}
 
-	*/
 
+int case3()
+{
+
+	/*/ small brute force attack demonstration
+
+		ullong64 secretkey = 1ULL << 20; // sample secretkey, deliberiately small for shorter tests, can be any 64 bit value
+
+		// if secretkey includes parity bits, increment them.
+		while (secretkey & paritybits) secretkey += secretkey & paritybits;
+		cout << "Secret key = 0x" << hex << uppercase << setw(16) << right << setfill('0') << secretkey << endl;
+
+		ullong64 plaintext = 0; // sample plaintext, chosen to be 0 for simplicity
+		ullong64 ciphertext = DESEncrypt(plaintext, bitset<64>(secretkey)); // encrypt PT with sample secret key
+		ullong64 foundkey = 0;
+		ullong64 searchcount = 0;
+		auto start = chrono::high_resolution_clock::now(); // see how long search takes
+		while (true)
+		{
+			// skip keys with parity bits set to reduce search space
+			while(foundkey & paritybits) foundkey += foundkey & paritybits;
+			ullong64 encryptedtext = DESEncrypt(plaintext, bitset<64>(foundkey)); // test current key
+			searchcount++; // increments per key, used to display total keys checked
+			if (encryptedtext == ciphertext) break; // if found key, break
+			foundkey++;
+		}
+		auto end = chrono::high_resolution_clock::now();
+
+		cout << "Found Key: 0x" << hex << uppercase << setw(16) << right << setfill('0') << foundkey << endl;
+		cout << "Time spent: " << chrono::duration<double>(end - start).count() << " seconds." << endl;
+		cout << "Keys checked: " << dec << searchcount << endl;*/
+	return 0;
+}
+	

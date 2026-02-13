@@ -5,7 +5,6 @@
 #include <bitset>
 
 using namespace std;
-typedef uint64_t ullong32;
 
 ullong64 DESEncrypt(ullong64 block, bitset<64> key, bool decrypt);
 ullong48 expand(ullong32 half);
@@ -14,4 +13,4 @@ ullong64 Scramble(ullong64 block);
 ullong64 Unscramble(ullong64 block);
 ullong32 Substitution(ullong48 input);
 ullong32 Permutation(ullong32 half);
-void printHex64(uint64_t v);
+void printHex64(ullong64 v);
