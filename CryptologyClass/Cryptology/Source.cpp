@@ -28,10 +28,13 @@ int main() {
 	vector64 pT, pT2, cT;
 	ullong64 IV = 0xFFFFFFFFFFFFFFFFULL; // sample IV, needs to be changed to be deterministic
 	ullong testPT = 0x0123456789ABCDEFULL; // sample test plaintext
+	ullong testPT2 = 0xFEDCBA9876543210ULL; // sample test key 2
 
 	ullong testkey = 0x0123456789ABCDEFULL; // sample test key
-	pT.clear();
-	pT.push_back(testPT);
+
+	pT.clear(); // ensure clear
+	pT.push_back(testPT); // load vector
+	pT.push_back(testPT2);
 
 	cbcEncrypt(pT, testkey, cT, IV);
 
@@ -46,7 +49,7 @@ int main() {
 
 	for (size_t i = 0; i < pT2.size(); ++i)
 	{
-		cout << "Recovered plaintext is 0x" << hex << uppercase << setw(16) << setfill('0') << pT[i] << dec << setfill(' ') << endl;
+		cout << "Recovered plaintext is 0x" << hex << uppercase << setw(16) << setfill('0') << pT2[i] << dec << setfill(' ') << endl;
 	}
 
 	// small brute force attack demonstration
