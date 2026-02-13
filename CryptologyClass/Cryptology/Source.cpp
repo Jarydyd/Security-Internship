@@ -12,29 +12,36 @@
 
 #include "KeyExpansion.h" // contains key expansion/shceulde functions
 #include "DESEncrypt.h" // contains functions necessary for DES encryption
+#include "CBC.h" // contains functions necessary for CBC mode
+#include "LFSR.h" // contains functions necessary for LFSR IV generation
 #include <iostream>
 #include <bitset>
 #include <string>
 #include <chrono>
 #include <iomanip>
 using namespace std;
+typedef vector<uint64_t> vector64;
 
 ullong64 paritybits = 0x0101010101010101ULL; // mask of parity bits
 
 // creates subkeys based off provided testkey, then performs a small bruteforce attack, skipping keys with respect to set parity bits
 int main() {
+	vector64 pT, cT;
+	ullong64 key, IV;
+	IV = 0xFFFFFFFFFFFFFFFFULL; // sample IV, needs to be changed to be deterministic
 	ullong testPT = 0x0123456789ABCDEFULL; // sample test plaintext
 	ullong testkey = 0x0123456789ABCDEFULL; // sample test key
-	ullong testPT2 = 0x123456ABCD132536ULL; // another sample test plaintext
-	ullong testkey2 = 0xAABB09182736CCDDULL; // another sample test key
-	ullong subkeys[16]; // holds each subkey
-	ullong64 CT = DESEncrypt(testPT, testkey, false);
-	ullong64 PT = DESEncrypt(CT, testkey, true); 
-	cout << "---------------------------------" << endl;
-	ullong64 CT2 = DESEncrypt(testPT2, testkey2, false);
-	ullong64 PT2 = DESEncrypt(CT2, testkey2, true);
+	pT.push_back(testPT);
+
+	cbcEncrypt(pT, testkey, cT, IV);
+	for (uint64_t current : cT)
+	{
+		cout << "0x" << hex << uppercase << current << dec << endl;
+	}
 
 	// small brute force attack demonstration
+	// ullong subkeys[16]; // holds each subkey
+
 	/*ullong64 secretkey = 1ULL << 20; // sample secretkey, deliberiately small for shorter tests, can be any 64 bit value
 
 	// if secretkey includes parity bits, increment them.

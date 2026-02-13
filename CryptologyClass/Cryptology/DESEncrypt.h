@@ -14,3 +14,4 @@ ullong64 Scramble(ullong64 block);
 ullong64 Unscramble(ullong64 block);
 ullong32 Substitution(ullong48 input);
 ullong32 Permutation(ullong32 half);
+void printHex64(uint64_t v);
