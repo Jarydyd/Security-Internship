@@ -12,4 +12,4 @@ using namespace std;
 
 void cbcEncrypt(const vector64 &pText, uint64_t key, vector64 &cText, uint64_t IV);
 
-void cbcDecrypt( );
+void cbcDecrypt(const vector64 &cText, uint64_t key, vector64 &pText, uint64_t IV);

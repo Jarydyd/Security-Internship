@@ -2,6 +2,8 @@
 #include "KeyExpansion.h"
 #include "DESTables.h" // contains tables: P E IP FP SBOXES and permutation for f function
 #include <bitset>
+#include <iostream>
+#include <iomanip>
 
 using namespace std;
 using namespace DESTables;
@@ -9,12 +11,13 @@ typedef uint64_t ullong32; // intentionally uint64, named 32 to keep track
 
 ullong64 DESEncrypt(ullong64 block, bitset<64> key, bool decrypt) 
 {
-	cout << endl << "Key is 0x" << hex << uppercase << setw(16) << setfill('0') << (unsigned long long)block << dec << setfill(' ') << endl; // set to hex, print block, reset to dec
+	cout << endl << "Key is 0x" << hex << uppercase << setw(16) << setfill('0') 
+		 << key.to_ullong() << dec << setfill(' ') << endl; // set to hex, print block, reset to dec
 	block = Scramble(block); // apply ip to block
 	ullong32 left = block >> 32; // split block into left and right halves
 	ullong32 right = block & 0xFFFFFFFF;
 	ullong48 subkeys[16] = {}; // also holds eah subkey
-	KeyExpansion(subkeys, key, true, false); // generates subkeys
+	KeyExpansion(subkeys, key, false, false); // generates subkeys
 	for (int round = 0; round < 16; round++) 
 	{
 		int hold = decrypt ? (15 - round) : round; // if decrypt, reverse order of subkeys, else don't

@@ -15,9 +15,7 @@
 #include "CBC.h" // contains functions necessary for CBC mode
 #include "LFSR.h" // contains functions necessary for LFSR IV generation
 #include <iostream>
-#include <bitset>
 #include <string>
-#include <chrono>
 #include <iomanip>
 using namespace std;
 typedef vector<uint64_t> vector64;
@@ -26,17 +24,29 @@ ullong64 paritybits = 0x0101010101010101ULL; // mask of parity bits
 
 // creates subkeys based off provided testkey, then performs a small bruteforce attack, skipping keys with respect to set parity bits
 int main() {
-	vector64 pT, cT;
-	ullong64 key, IV;
-	IV = 0xFFFFFFFFFFFFFFFFULL; // sample IV, needs to be changed to be deterministic
+
+	vector64 pT, pT2, cT;
+	ullong64 IV = 0xFFFFFFFFFFFFFFFFULL; // sample IV, needs to be changed to be deterministic
 	ullong testPT = 0x0123456789ABCDEFULL; // sample test plaintext
+
 	ullong testkey = 0x0123456789ABCDEFULL; // sample test key
+	pT.clear();
 	pT.push_back(testPT);
 
 	cbcEncrypt(pT, testkey, cT, IV);
-	for (uint64_t current : cT)
+
+	for (size_t i = 0; i < cT.size(); ++i)
 	{
-		cout << "0x" << hex << uppercase << current << dec << endl;
+		cout << "CT = 0x" << hex << uppercase << setw(16) << setfill('0') << cT[i] << dec << setfill(' ') << endl;
+	}
+
+
+	pT2.clear();
+	cbcEncrypt(cT, testkey, pT2, IV);
+
+	for (size_t i = 0; i < pT2.size(); ++i)
+	{
+		cout << "Recovered plaintext is 0x" << hex << uppercase << setw(16) << setfill('0') << pT[i] << dec << setfill(' ') << endl;
 	}
 
 	// small brute force attack demonstration
