@@ -127,7 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CBC.cpp" />
+    <ClCompile Include="operationMode.cpp" />
     <ClCompile Include="DESEncrypt.cpp" />
     <ClCompile Include="DESTables.h" />
     <ClCompile Include="KeyExpansion.cpp" />
@@ -135,7 +135,7 @@
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CBC.h" />
+    <ClInclude Include="operationMode.h" />
     <ClInclude Include="DESEncrypt.h" />
     <ClInclude Include="KeyExpansion.h" />
     <ClInclude Include="LFSR.h" />

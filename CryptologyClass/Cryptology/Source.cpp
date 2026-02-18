@@ -12,7 +12,7 @@
 
 #include "KeyExpansion.h" // contains key expansion/shceulde functions
 #include "DESEncrypt.h" // contains functions necessary for DES encryption
-#include "CBC.h" // contains functions necessary for CBC mode
+#include "operationMode.h" // contains functions necessary for CBC mode
 #include "LFSR.h" // contains functions necessary for LFSR IV generation
 #include <iostream>
 #include <string>

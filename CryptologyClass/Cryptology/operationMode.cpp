@@ -1,4 +1,4 @@
-#include "CBC.h"
+#include "operationMode.h"
 #include "DESEncrypt.h"
 #include <bitset>
 #include <vector>
@@ -6,10 +6,21 @@
 #include "KeyExpansion.h"
 
 
+// ECB
+// Ci = EK(Pi)
+// CBC
 // Ci = EK(Pi xor Ci-1), using DES, xor P1 with the IV then P2 with C1...
 // with c0 = IV
 // pt will be a vector of 64 bit blocks, as will the PT
 
+
+void ecbEncrypt(const vector64& pText, ullong64 key, vector64& cText)
+{
+}
+
+void ecbDecrypt(const vector64& cText, ullong64 key, vector64& pText)
+{
+}
 
 void cbcEncrypt(const vector64 &pText, ullong64 key, vector64 &cText, ullong64 IV)
 {

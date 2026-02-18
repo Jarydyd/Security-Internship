@@ -10,6 +10,11 @@ typedef vector<uint64_t> vector64;
 
 using namespace std;
 
+void ecbEncrypt(const vector64 &pText, ullong64 key, vector64 &cText);
+
+void ecbDecrypt(const vector64 &cText, ullong64 key, vector64 &pText);
+
 void cbcEncrypt(const vector64 &pText, ullong64 key, vector64 &cText, ullong64 IV);
 
 void cbcDecrypt(const vector64 &cText, ullong64 key, vector64 &pText, ullong64 IV);
+

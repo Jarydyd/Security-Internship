@@ -27,7 +27,7 @@
     <ClCompile Include="Source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CBC.cpp">
+    <ClCompile Include="operationMode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LFSR.cpp">
@@ -41,7 +41,7 @@
     <ClInclude Include="DESEncrypt.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CBC.h">
+    <ClInclude Include="operationMode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LFSR.h">
