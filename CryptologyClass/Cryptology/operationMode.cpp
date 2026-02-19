@@ -14,11 +14,13 @@
 // pt will be a vector of 64 bit blocks, as will the PT
 
 
-void ecbEncrypt(const vector64& pText, ullong64 key, vector64& cText)
+void ecbEncrypt(const vector64 &pText, ullong64 key, vector64 &cText)
 {
+	vector64 hold;
+	
 }
 
-void ecbDecrypt(const vector64& cText, ullong64 key, vector64& pText)
+void ecbDecrypt(const vector64 &cText, ullong64 key, vector64 &pText)
 {
 }
 

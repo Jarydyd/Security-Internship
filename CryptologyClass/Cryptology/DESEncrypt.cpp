@@ -97,7 +97,7 @@ ullong32 Permutation(ullong32 half)
 	return output.to_ullong();
 }
 
-static void printHex64(uint64_t v)
+static void printHex64(ullong64 v)
 {
 	cout << "0x" << hex << uppercase << setw(16) << setfill('0') << v << dec << setfill(' ');
 }
