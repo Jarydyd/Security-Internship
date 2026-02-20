@@ -29,18 +29,32 @@ int main() {
 	ullong64 IV = 0xFFFFFFFFFFFFFFFFULL; // sample IV, needs to be changed to be deterministic
 	ullong testPT = 0x0123456789ABCDEFULL; // sample test plaintext
 	ullong testPT2 = 0xFEDCBA9876543210ULL; // sample test key 2
-
+	
 	ullong testkey = 0x0123456789ABCDEFULL; // sample test key
-
 	pT.clear(); // ensure clear
 	pT.push_back(testPT); // load vector
 	pT.push_back(testPT2);
+
+
+	ecbEncrypt(pT, testkey, cT);
+	for (size_t i = 0; i < cT.size(); ++i)
+	{
+		cout << "ECB CT = 0x" << hex << uppercase << setw(16) << setfill('0') << cT[i] << dec << setfill(' ') << endl;
+	}
+
+	pT2.clear();
+	ecbDecrypt(cT, testkey, pT2);
+	for (size_t i = 0; i < pT2.size(); ++i)
+	{
+		cout << "ECB Recovered plaintext is 0x" << hex << uppercase << setw(16) << setfill('0') << pT2[i] << dec << setfill(' ') << endl;
+	}
+	cT.clear();
 
 	cbcEncrypt(pT, testkey, cT, IV);
 
 	for (size_t i = 0; i < cT.size(); ++i)
 	{
-		cout << "CT = 0x" << hex << uppercase << setw(16) << setfill('0') << cT[i] << dec << setfill(' ') << endl;
+		cout << "CBC CT = 0x" << hex << uppercase << setw(16) << setfill('0') << cT[i] << dec << setfill(' ') << endl;
 	}
 
 
@@ -49,9 +63,9 @@ int main() {
 
 	for (size_t i = 0; i < pT2.size(); ++i)
 	{
-		cout << "Recovered plaintext is 0x" << hex << uppercase << setw(16) << setfill('0') << pT2[i] << dec << setfill(' ') << endl;
+		cout << "CBC Recovered plaintext is 0x" << hex << uppercase << setw(16) << setfill('0') << pT2[i] << dec << setfill(' ') << endl;
 	}
-
+	
 	
 	string close;
 	cin >> close;

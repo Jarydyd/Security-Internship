@@ -16,12 +16,28 @@
 
 void ecbEncrypt(const vector64 &pText, ullong64 key, vector64 &cText)
 {
-	vector64 hold;
-	
+	bitset<64> bitSetKey(key);
+	cText.clear();
+	cText.reserve(pText.size());
+
+	for (ullong64 ptBlock : pText)
+	{
+		ullong64 ctBlock = DESEncrypt(ptBlock, bitSetKey, false);
+		cText.push_back(ctBlock);
+	}
 }
 
 void ecbDecrypt(const vector64 &cText, ullong64 key, vector64 &pText)
 {
+	bitset<64> bitSetKey(key);
+	pText.clear();
+	pText.reserve(cText.size());
+
+	for (ullong64 ctBlock : cText)
+	{
+		ullong64 ptBlock = DESEncrypt(ctBlock, bitSetKey, true);
+		pText.push_back(ptBlock);
+	}
 }
 
 void cbcEncrypt(const vector64 &pText, ullong64 key, vector64 &cText, ullong64 IV)
