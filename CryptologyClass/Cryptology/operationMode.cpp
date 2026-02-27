@@ -76,7 +76,9 @@ void cbcDecrypt(const vector64 &cText, ullong64 key, vector64 &pText, ullong64 I
 	}
 }
 
-// converts bytes to blocks as name implies, msb first; i.e. index 0 becomes MSB of first block
+// converts bytes to 64 bit blocks as name implies, msb first; i.e. index 0 becomes MSB of first block
+// pt --> pkcspad --> bytesToBlock --> CT
+// CT --> block to byte --> pkcsunpad --> PT
 static vector64 bytesToBlock(const vector8 &bytes)
 {
 	vector64 blocks;
@@ -87,20 +89,21 @@ static vector64 bytesToBlock(const vector8 &bytes)
 		{
 			hold = (hold << 8 | bytes[i + j]); // shift previous then concat byte
 		}
-		blocks.push_back(hold); // concat blocks
+		blocks.push_back(hold); // append blocks
 
 	}
 	return blocks;
 }
 
+// ... converts 64 bit block to bytes (MSB)
 static vector8 blockToBytes(const vector64 &block)
 {
 	vector8 bytes;
-	for (ullong64 hold : block)
+	for (ullong64 hold : block) // for each block
 	{
 		for (int i = 7; i >= 0; i--) // starting from MSB...
 		{
-			ullong8 byte = (hold >> (i * 8)) & 0xFF; // extract bit
+			ullong8 byte = (hold >> (i * 8)) & 0xFF; // extract byte
 			bytes.push_back(byte); // concat byte
 		}
 	}
