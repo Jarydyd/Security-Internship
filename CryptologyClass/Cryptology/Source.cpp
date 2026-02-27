@@ -18,55 +18,16 @@
 #include <string>
 #include <iomanip>
 #include <chrono>
+#include <vector>
+#include <cstdint>
 using namespace std;
-
+int case4();
 ullong64 paritybits = 0x0101010101010101ULL; // mask of parity bits
 
 // creates subkeys based off provided testkey, then performs a small bruteforce attack, skipping keys with respect to set parity bits
 int main() {
 
-	vector64 pT, pT2, cT;
-	ullong64 IV = 0xFFFFFFFFFFFFFFFFULL; // sample IV, needs to be changed to be deterministic
-	ullong testPT = 0x0123456789ABCDEFULL; // sample test plaintext
-	ullong testPT2 = 0xFEDCBA9876543210ULL; // sample test key 2
-	
-	ullong testkey = 0x0123456789ABCDEFULL; // sample test key
-	pT.clear(); // ensure clear
-	pT.push_back(testPT); // load vector
-	pT.push_back(testPT2);
-
-
-	ecbEncrypt(pT, testkey, cT);
-	for (size_t i = 0; i < cT.size(); ++i)
-	{
-		cout << "ECB CT = 0x" << hex << uppercase << setw(16) << setfill('0') << cT[i] << dec << setfill(' ') << endl;
-	}
-
-	pT2.clear();
-	ecbDecrypt(cT, testkey, pT2);
-	for (size_t i = 0; i < pT2.size(); ++i)
-	{
-		cout << "ECB Recovered plaintext is 0x" << hex << uppercase << setw(16) << setfill('0') << pT2[i] << dec << setfill(' ') << endl;
-	}
-	cT.clear();
-
-	cbcEncrypt(pT, testkey, cT, IV);
-
-	for (size_t i = 0; i < cT.size(); ++i)
-	{
-		cout << "CBC CT = 0x" << hex << uppercase << setw(16) << setfill('0') << cT[i] << dec << setfill(' ') << endl;
-	}
-
-
-	pT2.clear();
-	cbcDecrypt(cT, testkey, pT2, IV);
-
-	for (size_t i = 0; i < pT2.size(); ++i)
-	{
-		cout << "CBC Recovered plaintext is 0x" << hex << uppercase << setw(16) << setfill('0') << pT2[i] << dec << setfill(' ') << endl;
-	}
-	
-	
+	case4();
 	string close;
 	cin >> close;
 	return 0;
@@ -130,6 +91,50 @@ int case3()
 		cout << "Found Key: 0x" << hex << uppercase << setw(16) << right << setfill('0') << foundkey << endl;
 		cout << "Time spent: " << chrono::duration<double>(end - start).count() << " seconds." << endl;
 		cout << "Keys checked: " << dec << searchcount << endl;*/
+	return 0;
+}
+
+int case4()
+{
+	vector64 pT, pT2, cT;
+	ullong64 IV = 0xFFFFFFFFFFFFFFFFULL; // sample IV, needs to be changed to be deterministic
+	ullong testPT = 0x0123456789ABCDEFULL; // sample test plaintext
+	ullong testPT2 = 0xFEDCBA9876543210ULL; // sample test key 2
+
+	ullong testkey = 0x0123456789ABCDEFULL; // sample test key
+	pT.clear(); // ensure clear
+	pT.push_back(testPT); // load vector
+	pT.push_back(testPT2);
+
+
+	ecbEncrypt(pT, testkey, cT);
+	for (size_t i = 0; i < cT.size(); ++i)
+	{
+		cout << "ECB CT = 0x" << hex << uppercase << setw(16) << setfill('0') << cT[i] << dec << setfill(' ') << endl;
+	}
+
+	pT2.clear();
+	ecbDecrypt(cT, testkey, pT2);
+	for (size_t i = 0; i < pT2.size(); ++i)
+	{
+		cout << "ECB Recovered plaintext is 0x" << hex << uppercase << setw(16) << setfill('0') << pT2[i] << dec << setfill(' ') << endl;
+	}
+	cT.clear();
+
+	cbcEncrypt(pT, testkey, cT, IV);
+	for (size_t i = 0; i < cT.size(); ++i)
+	{
+		cout << "CBC CT = 0x" << hex << uppercase << setw(16) << setfill('0') << cT[i] << dec << setfill(' ') << endl;
+	}
+
+
+	pT2.clear();
+	cbcDecrypt(cT, testkey, pT2, IV);
+
+	for (size_t i = 0; i < pT2.size(); ++i)
+	{
+		cout << "CBC Recovered plaintext is 0x" << hex << uppercase << setw(16) << setfill('0') << pT2[i] << dec << setfill(' ') << endl;
+	}
 	return 0;
 }
 	

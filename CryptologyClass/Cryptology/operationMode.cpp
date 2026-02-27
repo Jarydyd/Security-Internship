@@ -3,6 +3,7 @@
 #include <bitset>
 #include <vector>
 #include <cstdint>
+#include "padding.h"
 #include "KeyExpansion.h"
 
 
@@ -73,6 +74,67 @@ void cbcDecrypt(const vector64 &cText, ullong64 key, vector64 &pText, ullong64 I
 		pText.push_back(ptBlock); // push ptb
 		prev = ctBlock; // update
 	}
+}
+
+static vector64 bytesToBlock(const vector8 &bytes)
+{
+	vector64 blocks;
+	for (size_t i = 0; i < bytes.size(); i += 8)
+	{
+		ullong64 hold = 0;
+		for (int j = 0; j < 8; j++)
+		{
+			hold = (hold << 8 | bytes[i + j]);
+		}
+		blocks.push_back(hold);
+
+	}
+	return blocks;
+}
+
+static vector8 blockToBytes(const vector64 &block)
+{
+	vector8 bytes;
+	for (ullong64 hold : block)
+	{
+		for (int i = 7; i >= 0; i--)
+		{
+			ullong8 byte = (hold >> (i * 8)) & 0xFF;
+			bytes.push_back(byte);
+		}
+	}
+	return bytes;
+}
+
+void padEcbEncrypt(const vector8 &ptBytes, ullong64 key, vector64 &ctBlocks)
+{
+	
+	vector8 padded = pkcs7Pad(ptBytes, 8);
+	vector64 blocks = bytesToBlock(padded);
+	ecbEncrypt(blocks, key, ctBlocks);
+}
+
+void padEcbDecrypt(const vector64& ctBlocks, ullong64 key, vector8 &ptBytes)
+{
+	vector64 ptBlocks;
+	ecbDecrypt(ctBlocks, key, ptBlocks);
+	vector8 hold = blockToBytes(ptBlocks);
+	ptBytes = pkcs7unPad(hold,8);
+}
+
+void padCbcEncrypt(const vector8 &ptBytes, ullong64 key, vector64 &ctBlocks, ullong64 IV)
+{
+	vector8 padded = pkcs7Pad(ptBytes, 8);
+	vector64 blocks = bytesToBlock(padded);
+	cbcEncrypt(blocks, key, ctBlocks, IV);
+}
+
+void padCbcDecrypt(const vector64 &ctBlocks, ullong64 key, vector8 &ptBytes, ullong64 IV)
+{
+	vector64 ptBlocks;
+	cbcDecrypt(ctBlocks, key, ptBlocks,IV);
+	vector8 hold = blockToBytes(ptBlocks);
+	ptBytes = pkcs7unPad(hold, 8);
 }
 
 

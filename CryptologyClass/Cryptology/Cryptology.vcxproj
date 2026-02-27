@@ -132,6 +132,7 @@
     <ClCompile Include="DESTables.h" />
     <ClCompile Include="KeyExpansion.cpp" />
     <ClCompile Include="LFSR.cpp" />
+    <ClCompile Include="padding.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -139,6 +140,7 @@
     <ClInclude Include="DESEncrypt.h" />
     <ClInclude Include="KeyExpansion.h" />
     <ClInclude Include="LFSR.h" />
+    <ClInclude Include="padding.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

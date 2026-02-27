@@ -33,6 +33,9 @@
     <ClCompile Include="LFSR.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="padding.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KeyExpansion.h">
@@ -45,6 +48,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LFSR.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="padding.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

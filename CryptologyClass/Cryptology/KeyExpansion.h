@@ -17,6 +17,7 @@ typedef string k64, k48, b56, b28, h64, h48;
 // integer aliases (uint64_t) for binary functions
 typedef uint64_t ullong, ullong64, ullong56, ullong48, ullong32, ullong28, ullong8;
 typedef vector<uint64_t> vector64;
+typedef vector<uint8_t> vector8;
 
 // string functions
 void KeyExpansion(k64 key, bool hex);
