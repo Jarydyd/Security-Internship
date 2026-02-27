@@ -21,17 +21,67 @@
 #include <vector>
 #include <cstdint>
 using namespace std;
-int case4();
-ullong64 paritybits = 0x0101010101010101ULL; // mask of parity bits
 
 // creates subkeys based off provided testkey, then performs a small bruteforce attack, skipping keys with respect to set parity bits
 int main() {
 
-	case4();
+	vector8 pTbytes;
+	string pT = "Hello Dr. Lee";
+	string superLongPT = "This is a super duper long test pt that im just checking out, this will be needlessly long for no reason other then because i want to type for a little bit right now as a little break and we will see if my code works with this type of length";
+	string shortPT = "s";
+	ullong64 IV = 0xFFFFFFFFFFFFFFFFULL; // sample IV, needs to be changed to be deterministic
+	string testPT = "0123456789ABCDEF"; // sample test plaintext
+	ullong testKey = 0x0123456789ABCDEFULL; // sample test key
+
+	for (char c : superLongPT)
+	{
+		pTbytes.push_back(static_cast<ullong8>(c));
+	}
+	
+
+	vector64 ecbEncrypt;
+	padEcbEncrypt(pTbytes, testKey, ecbEncrypt);
+	cout << "ECB ciphertext: " << endl;
+	for (auto c : ecbEncrypt)
+	{
+		cout << hex << uppercase << c;
+	}
+	cout << "\n------------------------------------------\n";
+
+	vector8 ecbDecrypt;
+	padEcbDecrypt(ecbEncrypt, testKey, ecbDecrypt);
+	cout << "ECB plaintext: " << endl;
+	for (char c : ecbDecrypt)
+	{
+		cout << hex << uppercase << c;
+	}
+	cout << "\n------------------------------------------\n";
+
+	vector64 cbcEncrypt;
+	padCbcEncrypt(pTbytes, testKey, cbcEncrypt, IV);
+	cout << "CBC ciphertext: " << endl;
+	for (auto c : cbcEncrypt)
+	{
+		cout << hex << uppercase << c;
+	}
+	cout << "\n------------------------------------------\n";
+
+	vector8 cbcDecrypt;
+	padCbcDecrypt(cbcEncrypt, testKey, cbcDecrypt, IV);
+	cout << "CBC plaintext:" << endl;
+	for (char c : cbcDecrypt)
+	{
+		cout << hex << uppercase << c;
+	}
+
+
+
 	string close;
 	cin >> close;
 	return 0;
 }
+
+
 
 int case2()
 {
@@ -61,10 +111,12 @@ int case2()
 }
 
 
-int case3()
+int bruteForce()
 {
 
-	/*/ small brute force attack demonstration
+	/*/small brute force attack demonstration
+	not updated to support current function parameters
+		ullong64 paritybits = 0x0101010101010101ULL; // mask of parity bits
 
 		ullong64 secretkey = 1ULL << 20; // sample secretkey, deliberiately small for shorter tests, can be any 64 bit value
 
@@ -91,10 +143,10 @@ int case3()
 		cout << "Found Key: 0x" << hex << uppercase << setw(16) << right << setfill('0') << foundkey << endl;
 		cout << "Time spent: " << chrono::duration<double>(end - start).count() << " seconds." << endl;
 		cout << "Keys checked: " << dec << searchcount << endl;*/
-	return 0;
+		return 0;
 }
 
-int case4()
+int unpaddedModes()
 {
 	vector64 pT, pT2, cT;
 	ullong64 IV = 0xFFFFFFFFFFFFFFFFULL; // sample IV, needs to be changed to be deterministic
@@ -110,21 +162,21 @@ int case4()
 	ecbEncrypt(pT, testkey, cT);
 	for (size_t i = 0; i < cT.size(); ++i)
 	{
-		cout << "ECB CT = 0x" << hex << uppercase << setw(16) << setfill('0') << cT[i] << dec << setfill(' ') << endl;
+		cout << "ECB CT = 0x" << hex << uppercase << cT[i] << dec << endl;
 	}
 
 	pT2.clear();
 	ecbDecrypt(cT, testkey, pT2);
 	for (size_t i = 0; i < pT2.size(); ++i)
 	{
-		cout << "ECB Recovered plaintext is 0x" << hex << uppercase << setw(16) << setfill('0') << pT2[i] << dec << setfill(' ') << endl;
+		cout << "ECB Recovered plaintext is 0x" << hex << uppercase << pT2[i] << dec << endl;
 	}
 	cT.clear();
 
 	cbcEncrypt(pT, testkey, cT, IV);
 	for (size_t i = 0; i < cT.size(); ++i)
 	{
-		cout << "CBC CT = 0x" << hex << uppercase << setw(16) << setfill('0') << cT[i] << dec << setfill(' ') << endl;
+		cout << "CBC CT = 0x" << hex << uppercase << cT[i] << dec << endl;
 	}
 
 
@@ -133,7 +185,7 @@ int case4()
 
 	for (size_t i = 0; i < pT2.size(); ++i)
 	{
-		cout << "CBC Recovered plaintext is 0x" << hex << uppercase << setw(16) << setfill('0') << pT2[i] << dec << setfill(' ') << endl;
+		cout << "CBC Recovered plaintext is 0x" << hex << uppercase << pT2[i] << dec << endl;
 	}
 	return 0;
 }

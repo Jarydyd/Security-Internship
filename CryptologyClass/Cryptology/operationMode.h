@@ -17,6 +17,7 @@ void cbcDecrypt(const vector64 &cText, ullong64 key, vector64 &pText, ullong64 I
 
 static vector64 bytesToBlock(const vector8 &bytes);
 static vector8 blockToBytes(const vector64 &block);
+
 // for pkcs#7 padding, plaintext is padded to multiple of 64 bits
 void padEcbEncrypt(const vector8 &padPText, ullong64 key, vector64 &padCText);
 void padEcbDecrypt(const vector64 &padCText, ullong64 key, vector8 &padPText);

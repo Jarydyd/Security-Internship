@@ -10,8 +10,7 @@ using namespace DESTables;
 
 ullong64 DESEncrypt(ullong64 block, bitset<64> key, bool decrypt) 
 {
-	cout << endl << "0x" << hex << uppercase << setw(16) << setfill('0') 
-		 << key.to_ullong() << dec << setfill(' ') << endl; // set to hex, print block, reset to dec
+	//cout << endl << "0x" << hex << uppercase << setw(16) << setfill('0')  << key.to_ullong() << dec << setfill(' ') << endl; // set to hex, print block, reset to dec
 	block = Scramble(block); // apply ip to block
 	ullong32 left = block >> 32; // split block into left and right halves
 	ullong32 right = block & 0xFFFFFFFF;
@@ -28,7 +27,7 @@ ullong64 DESEncrypt(ullong64 block, bitset<64> key, bool decrypt)
 	}
 	ullong64 outblock = (right << 32) | left; // concat halves together, note that CT = right left
 	outblock = Unscramble(outblock); // apply fp to block
-	cout << outblock << endl;
+	//cout << outblock << endl;
 	return outblock;
 }
 

@@ -14,7 +14,7 @@
 // with c0 = IV
 // pt will be a vector of 64 bit blocks, as will the PT
 
-
+// these four functions operate on 64 bit (8 byte) blocks
 void ecbEncrypt(const vector64 &pText, ullong64 key, vector64 &cText)
 {
 	bitset<64> bitSetKey(key);
@@ -76,17 +76,18 @@ void cbcDecrypt(const vector64 &cText, ullong64 key, vector64 &pText, ullong64 I
 	}
 }
 
+// converts bytes to blocks as name implies, msb first; i.e. index 0 becomes MSB of first block
 static vector64 bytesToBlock(const vector8 &bytes)
 {
 	vector64 blocks;
-	for (size_t i = 0; i < bytes.size(); i += 8)
+	for (size_t i = 0; i < bytes.size(); i += 8) // 8 bytes/block
 	{
 		ullong64 hold = 0;
 		for (int j = 0; j < 8; j++)
 		{
-			hold = (hold << 8 | bytes[i + j]);
+			hold = (hold << 8 | bytes[i + j]); // shift previous then concat byte
 		}
-		blocks.push_back(hold);
+		blocks.push_back(hold); // concat blocks
 
 	}
 	return blocks;
@@ -97,29 +98,30 @@ static vector8 blockToBytes(const vector64 &block)
 	vector8 bytes;
 	for (ullong64 hold : block)
 	{
-		for (int i = 7; i >= 0; i--)
+		for (int i = 7; i >= 0; i--) // starting from MSB...
 		{
-			ullong8 byte = (hold >> (i * 8)) & 0xFF;
-			bytes.push_back(byte);
+			ullong8 byte = (hold >> (i * 8)) & 0xFF; // extract bit
+			bytes.push_back(byte); // concat byte
 		}
 	}
 	return bytes;
 }
 
+// padded versions that handle arbitrary inputs by implementing PKCS#7
 void padEcbEncrypt(const vector8 &ptBytes, ullong64 key, vector64 &ctBlocks)
 {
 	
-	vector8 padded = pkcs7Pad(ptBytes, 8);
-	vector64 blocks = bytesToBlock(padded);
+	vector8 padded = pkcs7Pad(ptBytes, 8); // pad to 8 byte blocks (DES) 
+	vector64 blocks = bytesToBlock(padded); // put bytes in block (MSB)
 	ecbEncrypt(blocks, key, ctBlocks);
-}
+} 
 
-void padEcbDecrypt(const vector64& ctBlocks, ullong64 key, vector8 &ptBytes)
+void padEcbDecrypt(const vector64 &ctBlocks, ullong64 key, vector8 &ptBytes)
 {
 	vector64 ptBlocks;
-	ecbDecrypt(ctBlocks, key, ptBlocks);
-	vector8 hold = blockToBytes(ptBlocks);
-	ptBytes = pkcs7unPad(hold,8);
+	ecbDecrypt(ctBlocks, key, ptBlocks); 
+	vector8 hold = blockToBytes(ptBlocks); // unpack blocks into bytes 
+	ptBytes = pkcs7unPad(hold,8); // remove padding, noting that block size is 8
 }
 
 void padCbcEncrypt(const vector8 &ptBytes, ullong64 key, vector64 &ctBlocks, ullong64 IV)
