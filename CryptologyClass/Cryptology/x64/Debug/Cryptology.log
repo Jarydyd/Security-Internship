@@ -1,14 +1,2 @@
-﻿  operationMode.cpp
-C:\Users\fallt\source\repos\Jarydyd\Security-Internship\CryptologyClass\Cryptology\operationMode.cpp(104,20): warning C4244: 'argument': conversion from 'ullong8' to '_Ty', possible loss of data
-C:\Users\fallt\source\repos\Jarydyd\Security-Internship\CryptologyClass\Cryptology\operationMode.cpp(104,20): warning C4244:         with
-C:\Users\fallt\source\repos\Jarydyd\Security-Internship\CryptologyClass\Cryptology\operationMode.cpp(104,20): warning C4244:         [
-C:\Users\fallt\source\repos\Jarydyd\Security-Internship\CryptologyClass\Cryptology\operationMode.cpp(104,20): warning C4244:             _Ty=uint8_t
-C:\Users\fallt\source\repos\Jarydyd\Security-Internship\CryptologyClass\Cryptology\operationMode.cpp(104,20): warning C4244:         ]
-  padding.cpp
-C:\Users\fallt\source\repos\Jarydyd\Security-Internship\CryptologyClass\Cryptology\padding.cpp(13,35): warning C4244: 'argument': conversion from 'ullong8' to 'const _Ty', possible loss of data
-C:\Users\fallt\source\repos\Jarydyd\Security-Internship\CryptologyClass\Cryptology\padding.cpp(13,35): warning C4244:         with
-C:\Users\fallt\source\repos\Jarydyd\Security-Internship\CryptologyClass\Cryptology\padding.cpp(13,35): warning C4244:         [
-C:\Users\fallt\source\repos\Jarydyd\Security-Internship\CryptologyClass\Cryptology\padding.cpp(13,35): warning C4244:             _Ty=uint8_t
-C:\Users\fallt\source\repos\Jarydyd\Security-Internship\CryptologyClass\Cryptology\padding.cpp(13,35): warning C4244:         ]
-  Generating Code...
+﻿  Source.cpp
   Cryptology.vcxproj -> C:\Users\fallt\source\repos\Jarydyd\Security-Internship\CryptologyClass\x64\Debug\Cryptology.exe

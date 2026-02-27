@@ -33,7 +33,7 @@ int main() {
 	string testPT = "0123456789ABCDEF"; // sample test plaintext
 	ullong testKey = 0x0123456789ABCDEFULL; // sample test key
 
-	for (char c : superLongPT)
+	for (char c : testPT)
 	{
 		pTbytes.push_back(static_cast<ullong8>(c));
 	}
