@@ -27,11 +27,10 @@ int main() {
 	string pT = "Hello Dr. Lee";
 	string superLongPT = "This is a super duper long test pt that im just checking out, this will be needlessly long for no reason other then because i want to type for a little bit right now as a little break and we will see if my code works with this type of length";
 	string shortPT = "s";
-	ullong64 seed = 0x0123456789ABCDEFULL; // sample IV, needs to be changed to be deterministic
 	string testPT = "0123456789ABCDEF"; // sample test plaintext
 	ullong64 testKey = 0x0123456789ABCDEFULL; // sample test key
 
-	ullong64 IV = lfsrIV(seed);
+	ullong64 IV = lfsrIV(testKey); // just see with testkey
 	ullong IV2 = 0xFFFFFFFFFFFFFFFFULL;
 	for (char c : pT)
 	{
