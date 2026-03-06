@@ -1,5 +1,4 @@
 // Jaryd Rockman
-// git test git final test, please work :)
 // Dr. Eun-Joo Lee 
 // Purpose: 1. Key Schedule Implementation: 
 // Program the DES Key Schedule, taking a 64-bit key (including parity bits) and correctly performing:
@@ -22,18 +21,19 @@
 #include <cstdint>
 using namespace std;
 
-// creates subkeys based off provided testkey, then performs a small bruteforce attack, skipping keys with respect to set parity bits
 int main() {
 
 	vector8 pTbytes;
 	string pT = "Hello Dr. Lee";
 	string superLongPT = "This is a super duper long test pt that im just checking out, this will be needlessly long for no reason other then because i want to type for a little bit right now as a little break and we will see if my code works with this type of length";
 	string shortPT = "s";
-	ullong64 IV = 0xFFFFFFFFFFFFFFFFULL; // sample IV, needs to be changed to be deterministic
+	ullong64 seed = 0x0123456789ABCDEFULL; // sample IV, needs to be changed to be deterministic
 	string testPT = "0123456789ABCDEF"; // sample test plaintext
-	ullong testKey = 0x0123456789ABCDEFULL; // sample test key
+	ullong64 testKey = 0x0123456789ABCDEFULL; // sample test key
 
-	for (char c : testPT)
+	ullong64 IV = lfsrIV(seed);
+	ullong IV2 = 0xFFFFFFFFFFFFFFFFULL;
+	for (char c : pT)
 	{
 		pTbytes.push_back(static_cast<ullong8>(c));
 	}
@@ -85,6 +85,7 @@ int main() {
 
 int case2()
 {
+	// creates subkeys based off provided testkey, then performs a small bruteforce attack, skipping keys with respect to set parity bits
 	// alternative code that that can be used to allow user input as a key
 	ullong subkeys[16]; // holds each subkey
 	string keyString = "";
