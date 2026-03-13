@@ -31,6 +31,8 @@ int main() {
 	ullong64 testKey = 0x0123456789ABCDEFULL; // sample test key
 
 	ullong64 IV = lfsrIV(testKey); // just see with testkey
+
+
 	ullong IV2 = 0xFFFFFFFFFFFFFFFFULL;
 	for (char c : pT)
 	{
@@ -52,7 +54,7 @@ int main() {
 	cout << "ECB plaintext: " << endl;
 	for (char c : ecbDecrypt)
 	{
-		cout << hex << uppercase << c;
+		cout << c;
 	}
 	cout << "\n------------------------------------------\n";
 
@@ -70,7 +72,7 @@ int main() {
 	cout << "CBC plaintext:" << endl;
 	for (char c : cbcDecrypt)
 	{
-		cout << hex << uppercase << c;
+		cout << c;
 	}
 
 
