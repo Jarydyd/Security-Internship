@@ -28,10 +28,11 @@ int main() {
 	string superLongPT = "This is a super duper long test pt that im just checking out, this will be needlessly long for no reason other then because i want to type for a little bit right now as a little break and we will see if my code works with this type of length";
 	string shortPT = "s";
 	string testPT = "0123456789ABCDEF"; // sample test plaintext
-	ullong64 testKey = 0x0123456789ABCDEFULL; // sample test key
+	ullong64 testKey2 = 0x0123456789ABCDEFULL; // sample test key
+	ullong64 testKey = 0xFEDCBA9876543210ULL; // sample test key 2
 
 	ullong64 IV = lfsrIV(testKey); // just see with testkey
-
+	
 
 	ullong IV2 = 0xFFFFFFFFFFFFFFFFULL;
 	for (char c : pT)

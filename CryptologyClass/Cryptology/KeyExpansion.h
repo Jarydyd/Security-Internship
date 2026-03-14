@@ -11,6 +11,7 @@
 
 using namespace std;
 
+// just using this file for typedefs
 // string aliases for for string functions
 typedef string k64, k48, b56, b28, h64, h48;
 
